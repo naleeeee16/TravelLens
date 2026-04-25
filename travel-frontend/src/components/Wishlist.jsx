@@ -10,13 +10,12 @@ export default function Wishlist({
     <div className="wishlist-container">
       {/* Header */}
       <div className="wishlist-header">
-        <h2>💖 My Travel Wishlist</h2>
+        <h2>My Travel Wishlist</h2>
         <p>{items.length} destination{items.length !== 1 ? 's' : ''} saved</p>
       </div>
 
       {items.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon">💭</div>
           <h3>No destinations yet</h3>
           <p>Go back to discover and add destinations to your wishlist</p>
         </div>
@@ -25,23 +24,12 @@ export default function Wishlist({
           {/* Summary Stats */}
           <div className="wishlist-stats">
             <div className="stat-box">
-              <span className="stat-icon">🌍</span>
               <div>
                 <p className="stat-label">Total Destinations</p>
                 <p className="stat-value">{items.length}</p>
               </div>
             </div>
             <div className="stat-box">
-              <span className="stat-icon">⭐</span>
-              <div>
-                <p className="stat-label">Average Match</p>
-                <p className="stat-value">
-                  {Math.round(items.reduce((sum, d) => sum + (d.match_percentage || 85), 0) / items.length)}%
-                </p>
-              </div>
-            </div>
-            <div className="stat-box">
-              <span className="stat-icon">✈️</span>
               <div>
                 <p className="stat-label">Ready to Book</p>
                 <p className="stat-value">{items.length}</p>
@@ -55,7 +43,6 @@ export default function Wishlist({
               <thead>
                 <tr>
                   <th>Destination</th>
-                  <th>Match Score</th>
                   <th>Vibe</th>
                   <th>Actions</th>
                 </tr>
@@ -71,11 +58,6 @@ export default function Wishlist({
                         </p>
                       </div>
                     </td>
-                    <td className="score-cell">
-                      <div className="score-badge">
-                        {destination.match_percentage || 85}%
-                      </div>
-                    </td>
                     <td className="vibe-cell">
                       <span className="vibe-tag">
                         {destination.primary_vibe || 'Travel Experience'}
@@ -87,14 +69,14 @@ export default function Wishlist({
                         onClick={() => onViewDetail(destination)}
                         title="View Details"
                       >
-                        👁️
+                        View
                       </button>
                       <button
                         className="btn-icon flights"
                         onClick={() => onFindFlights(destination)}
                         title="Find Flights"
                       >
-                        ✈️
+                        Flights
                       </button>
                       <button
                         className="btn-icon remove"
@@ -113,10 +95,10 @@ export default function Wishlist({
           {/* Action Bar */}
           <div className="wishlist-actions">
             <button className="btn-primary large">
-              📋 Export Wishlist
+              Export Wishlist
             </button>
             <button className="btn-secondary large">
-              ✈️ Book All Flights
+              Book All Flights
             </button>
           </div>
         </div>

@@ -20,16 +20,7 @@ export default function DestinationDetail({
       <div className="detail-content">
         {/* Hero Section */}
         <div className="hero-section">
-          <div className="hero-badge">
-            <span className="badge-text">AI Recommendation</span>
-          </div>
           <h1 className="destination-title">{destination.city}</h1>
-          <div className="match-indicator">
-            <div className="match-bar-container">
-              <div className="match-bar" style={{width: `${destination.match_percentage || 85}%`}}></div>
-            </div>
-            <span className="match-text">{destination.match_percentage || 85}% Match to Your Preferences</span>
-          </div>
         </div>
 
         {/* Main Grid */}
@@ -38,7 +29,7 @@ export default function DestinationDetail({
           <div className="detail-column left">
             {/* Why This Destination Card */}
             <section className="detail-section">
-              <h2>✨ Why You'll Love It</h2>
+              <h2>Why You'll Love It</h2>
               <p className="reason-text">
                 {destination.reason || 'This destination perfectly matches your travel preferences based on your uploaded images and style choices.'}
               </p>
@@ -47,7 +38,7 @@ export default function DestinationDetail({
             {/* Vibe Section */}
             {destination.primary_vibe && (
               <section className="detail-section">
-                <h2>🎨 Travel Vibe</h2>
+              <h2>Travel Vibe</h2>
                 <div className="vibe-card">
                   <p>{destination.primary_vibe}</p>
                 </div>
@@ -57,7 +48,7 @@ export default function DestinationDetail({
             {/* Tags Section */}
             {destination.extracted_tags && (
               <section className="detail-section">
-                <h2>🏷️ Key Characteristics</h2>
+              <h2>Key Characteristics</h2>
                 <div className="tags-container">
                   {destination.extracted_tags.map((tag, index) => (
                     <span key={index} className="tag-item">{tag}</span>
@@ -79,19 +70,19 @@ export default function DestinationDetail({
                   onClick={() => onAddToWishlist(destination)}
                   disabled={isInWishlist}
                 >
-                  {isInWishlist ? '✓ In Wishlist' : '♡ Add to Wishlist'}
+                  {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
                 </button>
 
                 <button
                   className="btn-action primary"
                   onClick={() => onFindFlights(destination)}
                 >
-                  ✈️ Find Flights
+                  Find Flights
                 </button>
               </div>
 
               <div className="info-box">
-                <h4>ℹ️ Quick Tip</h4>
+                <h4>Quick Tip</h4>
                 <p>Click "Find Flights" to search for the best deals on Skyscanner</p>
               </div>
             </div>
@@ -99,10 +90,6 @@ export default function DestinationDetail({
             {/* Destination Stats (if available) */}
             <div className="stats-card">
               <h3>Destination Info</h3>
-              <div className="stat-item">
-                <span className="stat-label">Match Score</span>
-                <span className="stat-value">{destination.match_percentage || 85}%</span>
-              </div>
               <div className="stat-item">
                 <span className="stat-label">AI Confidence</span>
                 <span className="stat-value">High</span>
