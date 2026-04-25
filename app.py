@@ -9,6 +9,7 @@ from PIL import Image
 from pypinterest import get_pinterest_board_images, prepare_images_for_gemini
 from agent import analyze_visual_vibe, get_destination_recommendations
 from skyscanner import get_flights_for_destinations
+from images import UnsplashScouter
 
 app = FastAPI()
 
@@ -65,6 +66,14 @@ async def discover(request: Request):
         
         # Step 2: Recommendations
         final_data = get_destination_recommendations(visual_context, desired_features)
+        
+        # Add 2 images for each top destination
+        scouter = UnsplashScouter()
+        for dest in final_data.get('top_destinations', []):
+            city = dest.get('city')
+            if city:
+                images = scouter.get_destination_images(city, count=2)
+                dest['images'] = images
         
         return final_data
         

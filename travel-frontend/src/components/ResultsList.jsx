@@ -1,6 +1,96 @@
 import { useState } from 'react'
 import './ResultsList.css'
 
+function DestinationCard({ destination, onSelect }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = (e) => {
+    e.stopPropagation();
+    if (destination.images && destination.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % destination.images.length);
+    }
+  };
+
+  const handlePrevImage = (e) => {
+    e.stopPropagation();
+    if (destination.images && destination.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + destination.images.length) % destination.images.length);
+    }
+  };
+
+  return (
+    <div className="destination-card" onClick={() => onSelect(destination)}>
+      {/* Carousel */}
+      {destination.images && destination.images.length > 0 && (
+        <div className="card-carousel">
+          <img 
+            src={destination.images[currentImageIndex].url} 
+            alt={destination.city} 
+            className="carousel-image"
+          />
+          {destination.match_percentage && (
+            <div className="match-badge">
+              <span className="match-percentage">{destination.match_percentage}%</span>
+              <span className="match-label">Match</span>
+            </div>
+          )}
+          {destination.images.length > 1 && (
+            <>
+              <div className="carousel-controls">
+                <button className="carousel-btn prev" onClick={handlePrevImage}>‹</button>
+                <button className="carousel-btn next" onClick={handleNextImage}>›</button>
+              </div>
+              <div className="carousel-dots">
+                {destination.images.map((_, idx) => (
+                  <span key={idx} className={`dot ${idx === currentImageIndex ? 'active' : ''}`} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Card Content */}
+      <div className="card-content">
+        {!destination.images && destination.match_percentage && (
+          <div className="match-badge">
+            <span className="match-percentage">{destination.match_percentage}%</span>
+            <span className="match-label">Match</span>
+          </div>
+        )}
+        <h3 className="destination-name">
+          {destination.city}
+        </h3>
+
+        {destination.reason && (
+          <p className="destination-reason">
+            {destination.reason.length > 100
+              ? destination.reason.substring(0, 100) + '...'
+              : destination.reason}
+          </p>
+        )}
+
+        {destination.primary_vibe && (
+          <p className="destination-vibe">
+            {destination.primary_vibe}
+          </p>
+        )}
+
+        {destination.extracted_tags && (
+          <div className="tags">
+            {destination.extracted_tags.slice(0, 3).map((tag, i) => (
+              <span key={i} className="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Arrow */}
+      <div className="card-arrow">→</div>
+    </div>
+  );
+}
+
 export default function ResultsList({
   destinations,
   commonTheme,
@@ -52,43 +142,11 @@ export default function ResultsList({
       {/* Results Grid */}
       <div className="destinations-grid">
         {sortedDestinations.map((destination, index) => (
-          <div
+          <DestinationCard 
             key={index}
-            className="destination-card"
-            onClick={() => onSelectDestination(destination)}
-          >
-            {/* Card Content */}
-            <div className="card-content">
-              <h3 className="destination-name">
-                {destination.city}
-              </h3>
-
-              {destination.reason && (
-                <p className="destination-reason">
-                  {destination.reason.length > 100
-                    ? destination.reason.substring(0, 100) + '...'
-                    : destination.reason}
-                </p>
-              )}
-
-              {destination.primary_vibe && (
-                <p className="destination-vibe">
-                  {destination.primary_vibe}
-                </p>
-              )}
-
-              {destination.extracted_tags && (
-                <div className="tags">
-                  {destination.extracted_tags.slice(0, 3).map((tag, i) => (
-                    <span key={i} className="tag">{tag}</span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Arrow */}
-            <div className="card-arrow">→</div>
-          </div>
+            destination={destination}
+            onSelect={onSelectDestination}
+          />
         ))}
       </div>
 

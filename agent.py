@@ -172,8 +172,3 @@ def run_travelens():
     except Exception as e:
         print(f"\n[✗] Pipeline Error: {e}")
 
-if __name__ == "__main__":
-    while True:
-        run_travelens()
-        if input("\nPress Enter to run again or 'q' to quit: ").lower() == 'q':
-            break
