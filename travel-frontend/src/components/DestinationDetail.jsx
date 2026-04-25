@@ -38,7 +38,7 @@ export default function DestinationDetail({
             {/* Vibe Section */}
             {destination.primary_vibe && (
               <section className="detail-section">
-              <h2>Travel Vibe</h2>
+                <h2>Travel Vibe</h2>
                 <div className="vibe-card">
                   <p>{destination.primary_vibe}</p>
                 </div>
@@ -48,7 +48,7 @@ export default function DestinationDetail({
             {/* Tags Section */}
             {destination.extracted_tags && (
               <section className="detail-section">
-              <h2>Key Characteristics</h2>
+                <h2>Key Characteristics</h2>
                 <div className="tags-container">
                   {destination.extracted_tags.map((tag, index) => (
                     <span key={index} className="tag-item">{tag}</span>
