@@ -7,3 +7,7 @@ Pillow
 dotenv
 torch
 python-dotenv
+openai
+pillow
+flask
+flask_cors

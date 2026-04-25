@@ -20,7 +20,11 @@ export default function DestinationDetail({
       <div className="detail-content">
         {/* Hero Section */}
         <div className="hero-section">
+          <div className="hero-badge">{destination.match_percentage}% Match</div>
           <h1 className="destination-title">{destination.city}</h1>
+          {destination.primary_vibe && (
+            <p className="hero-vibe">{destination.primary_vibe}</p>
+          )}
         </div>
 
         {/* Main Grid */}
@@ -28,25 +32,35 @@ export default function DestinationDetail({
           {/* Left Column */}
           <div className="detail-column left">
             {/* Why This Destination Card */}
-            <section className="detail-section">
+            <section className="detail-section highlight-section">
               <h2>Why You'll Love It</h2>
               <p className="reason-text">
                 {destination.reason || 'This destination perfectly matches your travel preferences based on your uploaded images and style choices.'}
               </p>
             </section>
 
-            {/* Vibe Section */}
-            {destination.primary_vibe && (
-              <section className="detail-section">
-                <h2>Travel Vibe</h2>
-                <div className="vibe-card">
-                  <p>{destination.primary_vibe}</p>
+            {/* Travel Details */}
+            <div className="info-cards-row">
+              {destination.suggested_season && (
+                <div className="info-card">
+                  <span className="info-icon">☀️</span>
+                  <div>
+                    <span className="info-label">Best Time to Visit</span>
+                    <span className="info-value">{destination.suggested_season}</span>
+                  </div>
                 </div>
-              </section>
-            )}
+              )}
+              <div className="info-card">
+                <span className="info-icon">🎯</span>
+                <div>
+                  <span className="info-label">Match Score</span>
+                  <span className="info-value">{destination.match_percentage}% Match</span>
+                </div>
+              </div>
+            </div>
 
             {/* Tags Section */}
-            {destination.extracted_tags && (
+            {destination.extracted_tags && destination.extracted_tags.length > 0 && (
               <section className="detail-section">
                 <h2>Key Characteristics</h2>
                 <div className="tags-container">
@@ -60,7 +74,7 @@ export default function DestinationDetail({
 
           {/* Right Column - CTA Section */}
           <div className="detail-column right">
-            <div className="cta-card">
+            <div className="cta-card glass-panel">
               <h3>Ready to Plan Your Trip?</h3>
               <p>Save this destination to your wishlist or find flights now</p>
 
@@ -70,7 +84,7 @@ export default function DestinationDetail({
                   onClick={() => onAddToWishlist(destination)}
                   disabled={isInWishlist}
                 >
-                  {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
+                  {isInWishlist ? '✓ Saved to Wishlist' : 'Add to Wishlist'}
                 </button>
 
                 <button
@@ -82,17 +96,8 @@ export default function DestinationDetail({
               </div>
 
               <div className="info-box">
-                <h4>Quick Tip</h4>
-                <p>Click "Find Flights" to search for the best deals on Skyscanner</p>
-              </div>
-            </div>
-
-            {/* Destination Stats (if available) */}
-            <div className="stats-card">
-              <h3>Destination Info</h3>
-              <div className="stat-item">
-                <span className="stat-label">AI Confidence</span>
-                <span className="stat-value">High</span>
+                <h4>✈️ Next Steps</h4>
+                <p>Click "Find Flights" to search for the best deals from your location</p>
               </div>
             </div>
           </div>

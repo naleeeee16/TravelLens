@@ -86,9 +86,7 @@ def get_destination_recommendations(visual_context, user_filter):
     "{user_filter}"
 
     SCORING ALGORITHM:
-    1. FEATURES SCORE (50%): (50 / total_tags) * (tags_present)
-    2. LANDMARKS SCORE (50%): (50 / total_landmarks) * (landmarks_present) 
-       (If no landmarks, use Vibe Consistency for this 50%)
+    Base the recommendations on visual match and user filters, but DO NOT output the math or formula.
 
     MANDATORY LOGIC:
     1. USER OVERRIDE: Every result MUST be within: "{user_filter}".
@@ -98,7 +96,14 @@ def get_destination_recommendations(visual_context, user_filter):
     {{
       "common_theme": "Description",
       "top_destinations": [
-        {{ "city": "City, Country", "reason": "50/50 formula breakdown", "match_percentage": 0 }}
+        {{ 
+          "city": "City, Country", 
+          "reason": "Compelling 2-sentence travel pitch. NO math, NO formulas.", 
+          "match_percentage": 95,
+          "primary_vibe": "e.g. Romantic coastal escape",
+          "extracted_tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+          "suggested_season": "Best time to visit"
+        }}
       ]
     }}
     """

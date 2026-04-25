@@ -36,23 +36,40 @@ export default function InputMode({ onSubmit, isLoading }) {
     onSubmit({ source: 'pinterest', url: pinterestUrl, desired_features: desiredFeatures.trim() })
   }
 
-  const handleImageSubmit = () => {
+  const handleImageSubmit = async () => {
     if (uploadedImages.length === 0) {
       setError('Please upload at least one image')
       return
     }
-    onSubmit({ source: 'images', images: uploadedImages, desired_features: desiredFeatures.trim() })
+
+    try {
+      const base64Images = await Promise.all(
+        uploadedImages.map(img => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(img.file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+          });
+        })
+      );
+      onSubmit({ source: 'images', images: base64Images, desired_features: desiredFeatures.trim() })
+    } catch (err) {
+      setError('Error processing images')
+    }
   }
 
   return (
     <div className="input-mode-container">
       <div className="input-header">
         <h2>How would you like to find your next destination?</h2>
-        <p>Choose between uploading images or using a Pinterest board</p>
       </div>
 
       <div className="trip-features-section">
-        <label htmlFor="desired-features">What would you like on this trip?</label>
+        <label htmlFor="desired-features">
+          What would you like on this trip?
+          <span className="optional-badge">OPTIONAL</span>
+        </label>
         <input
           id="desired-features"
           type="text"
@@ -61,9 +78,6 @@ export default function InputMode({ onSubmit, isLoading }) {
           onChange={(e) => setDesiredFeatures(e.target.value)}
           disabled={isLoading}
         />
-        <p className="trip-features-hint">
-          Optional: add preferred features, activities, or travel vibe.
-        </p>
       </div>
 
       <div className="tabs">

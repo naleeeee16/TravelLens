@@ -4,48 +4,10 @@ import InputMode from './components/InputMode'
 import ResultsList from './components/ResultsList'
 import DestinationDetail from './components/DestinationDetail'
 import Wishlist from './components/Wishlist'
+import Flights from './components/Flights'
+import Reservations from './components/Reservations'
 
-// Mock data for testing
-const MOCK_RESPONSE = {
-  common_theme: "Tropical beaches with crystal clear waters and lush rainforests",
-  top_destinations: [
-    {
-      city: "Bali, Indonesia",
-      reason: "Perfect blend of beautiful beaches, ancient temples, and vibrant culture. The island offers everything from surfing at Uluwatu to rice terrace walks in Ubud.",
-      match_percentage: 94,
-      primary_vibe: "Serene tropical paradise with spiritual depth",
-      extracted_tags: ["beaches", "temples", "nature", "culture", "surfing"]
-    },
-    {
-      city: "Maldives",
-      reason: "World-renowned for pristine white sand beaches, overwater bungalows, and incredible marine life for snorkeling and diving.",
-      match_percentage: 91,
-      primary_vibe: "Luxury escape for relaxation and adventure",
-      extracted_tags: ["luxury", "diving", "resorts", "marine-life", "privacy"]
-    },
-    {
-      city: "Costa Rica",
-      reason: "Eco-tourism paradise with rainforests, volcanoes, and both Pacific and Caribbean coastlines offering diverse beach experiences.",
-      match_percentage: 88,
-      primary_vibe: "Adventure meets natural beauty",
-      extracted_tags: ["rainforest", "wildlife", "adventure", "ecotourism", "volcanoes"]
-    },
-    {
-      city: "Phuket, Thailand",
-      reason: "Thailand's largest island combines stunning beaches, vibrant nightlife, and rich Thai culture with excellent food scene.",
-      match_percentage: 85,
-      primary_vibe: "Vibrant beach culture with welcoming spirit",
-      extracted_tags: ["beaches", "nightlife", "food", "culture", "islands"]
-    },
-    {
-      city: "Santorini, Greece",
-      reason: "Iconic white-washed buildings with blue domes, dramatic cliffs, and legendary sunsets over the Aegean Sea.",
-      match_percentage: 82,
-      primary_vibe: "Romantic Mediterranean escape",
-      extracted_tags: ["romantic", "sunset", "architecture", "wine", "views"]
-    }
-  ]
-}
+// Mock data for testing removed
 
 function App() {
   const [currentView, setCurrentView] = useState('input')
@@ -54,18 +16,33 @@ function App() {
   const [wishlist, setWishlist] = useState([])
   const [loading, setLoading] = useState(false)
   const [commonTheme, setCommonTheme] = useState('')
-
+  const [reservations, setReservations] = useState([])
+  
   const handleInputSubmit = async (inputData) => {
     setLoading(true)
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    // Use mock data instead of API call
-    const data = MOCK_RESPONSE
-    setDestinations(data.top_destinations || [])
-    setCommonTheme(data.common_theme || '')
-    setCurrentView('results')
-    setLoading(false)
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/discover', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputData)
+      })
+      
+      const data = await response.json()
+      if (response.ok) {
+        setDestinations(data.top_destinations || [])
+        setCommonTheme(data.common_theme || '')
+        setCurrentView('results')
+      } else {
+        alert(data.error || 'An error occurred during discovery.')
+      }
+    } catch (error) {
+      console.error('API Error:', error)
+      alert('Failed to connect to the backend server. Make sure it is running.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSelectDestination = (destination) => {
@@ -84,7 +61,19 @@ function App() {
   }
 
   const handleFindFlights = (destination) => {
-    window.open(`https://www.skyscanner.com/transport/flights-from/${destination.city}`, '_blank')
+    setSelectedDestination(destination)
+    setCurrentView('flights')
+  }
+
+  const handleSaveReservation = (flight) => {
+    if (!reservations.find(res => res.booking_link === flight.booking_link)) {
+      setReservations([...reservations, flight])
+      alert('Flight saved to reservations!')
+    }
+  }
+
+  const handleRemoveReservation = (link) => {
+    setReservations(reservations.filter(res => res.booking_link !== link))
   }
 
   return (
@@ -107,6 +96,12 @@ function App() {
               onClick={() => setCurrentView('wishlist')}
             >
               Wishlist ({wishlist.length})
+            </button>
+            <button 
+              className={`nav-btn ${currentView === 'reservations' ? 'active' : ''}`}
+              onClick={() => setCurrentView('reservations')}
+            >
+              Reservations ({reservations.length})
             </button>
           </nav>
         </div>
@@ -146,6 +141,21 @@ function App() {
               setSelectedDestination(destination)
               setCurrentView('detail')
             }}
+          />
+        )}
+
+        {currentView === 'flights' && selectedDestination && (
+          <Flights 
+            destination={selectedDestination}
+            onBack={() => setCurrentView('wishlist')}
+            onSaveReservation={handleSaveReservation}
+          />
+        )}
+
+        {currentView === 'reservations' && (
+          <Reservations 
+            items={reservations}
+            onRemove={handleRemoveReservation}
           />
         )}
       </main>
