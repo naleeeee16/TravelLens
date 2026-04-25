@@ -147,7 +147,7 @@
 }
 
 .wishlist-row:hover {
-  background: rgba(99, 102, 241, 0.05);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .wishlist-row:last-child {
@@ -183,13 +183,13 @@
 
 .score-badge {
   display: inline-block;
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.1);
   color: var(--success);
   padding: 0.4rem 0.85rem;
   border-radius: 20px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9rem;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 /* Vibe Cell */
@@ -199,13 +199,13 @@
 
 .vibe-tag {
   display: inline-block;
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--accent-secondary);
+  background: rgba(255, 181, 167, 0.1);
+  color: var(--accent-primary);
   padding: 0.4rem 0.85rem;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  border: 1px solid rgba(255, 181, 167, 0.2);
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -218,7 +218,7 @@
 }
 
 .btn-icon {
-  background: var(--bg-hover);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   cursor: pointer;
   font-size: 0.78rem;
@@ -238,18 +238,21 @@
 }
 
 .btn-icon.view:hover {
-  background: rgba(99, 102, 241, 0.18);
-  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(255, 181, 167, 0.1);
+  border-color: rgba(255, 181, 167, 0.3);
+  color: var(--accent-primary);
 }
 
 .btn-icon.flights:hover {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--success);
 }
 
 .btn-icon.remove:hover {
-  background: rgba(239, 68, 68, 0.18);
-  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--danger);
 }
 
 /* Wishlist Actions */
@@ -264,21 +267,20 @@
   padding: 0.9rem 2.25rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: 8px;
   letter-spacing: 0.5px;
 }
 
 .btn-primary.large {
-  background: var(--accent-gradient);
-  color: #ffffff;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
   border: none;
-  box-shadow: 0 4px 15px rgba(201, 101, 111, 0.35);
 }
 
 .btn-primary.large:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(201, 101, 111, 0.5);
-  background: linear-gradient(135deg, #d47a82 0%, #eea1a4 100%);
+  box-shadow: var(--shadow-glow);
+  background: var(--accent-secondary);
 }
 
 .btn-secondary.large {

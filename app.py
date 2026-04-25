@@ -87,11 +87,20 @@ async def flights(request: Request):
     try:
         data = await request.json()
         city = data.get('city')
+        iata = data.get('iata')
+        origin_iata = data.get('origin_iata')
+        date_str = data.get('date')
+        date_end = data.get('date_end')
         
         if not city:
             return JSONResponse(status_code=400, content={'error': 'City is required'})
+        if not origin_iata or not date_str:
+            return JSONResponse(status_code=400, content={'error': 'origin_iata and date are required'})
             
-        results = get_flights_for_destinations([city])
+        if not iata:
+            iata = city[:3].upper()
+            
+        results = get_flights_for_destinations([(city, iata, origin_iata, date_str, date_end)])
         city_results = results.get(city, [])
         
         if isinstance(city_results, dict) and 'error' in city_results:

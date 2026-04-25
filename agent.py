@@ -102,7 +102,8 @@ def get_destination_recommendations(visual_context, user_filter):
           "match_percentage": 95,
           "primary_vibe": "e.g. Romantic coastal escape",
           "extracted_tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
-          "suggested_season": "Best time to visit"
+          "suggested_season": "Best time to visit",
+          "closest_airport_iata": "3-letter IATA code of nearest major airport"
         }}
       ]
     }}

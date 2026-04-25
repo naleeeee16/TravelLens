@@ -5,8 +5,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .detail-header {
@@ -43,7 +50,7 @@
   margin-bottom: 2.5rem;
   text-align: center;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .hero-badge {
@@ -192,7 +199,7 @@
   color: var(--text-primary);
 }
 
-.cta-card > p {
+.cta-card>p {
   margin: 0 0 1.5rem 0;
   color: var(--text-secondary);
   line-height: 1.5;
@@ -273,17 +280,21 @@
   .detail-grid {
     grid-template-columns: 1fr;
   }
+
   .info-cards-row {
     flex-direction: column;
   }
 }
+
 @media (max-width: 768px) {
   .destination-title {
     font-size: 2.2rem;
   }
+
   .hero-section {
     padding: 3rem 1.5rem;
   }
+
   .detail-section {
     padding: 1.5rem;
   }
