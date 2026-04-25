@@ -1,35 +1,19 @@
 # TravelLens
 
-TravelLens je AI-powered aplikacija za otkrivanje putovanja koja analizira slike koristeći Google Gemini AI da izvuče karakteristike i predloži destinacije na osnovu zajedničkih tema.
+TravelLens is an AI-powered travel discovery application that analyzes images using Google Gemini AI to extract features and recommend destinations based on shared themes.
 
 ## Installation
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Postavite Google Gemini API ključ u `agent.py` (trenutno je hardkodovan)
-
-## Korišćenje
-
-### Pokretanje API servera
-
 ```bash
-uvicorn agent:app --reload
+pip install -r requirements.txt
 ```
 
-### API Endpoint
+## Run the server
 
-- `GET /travel-board`: Analizira slike u `images/` folderu i vraća preporuke destinacija
+uvicorn agent:app --reload
 
-## Zavisnosti
+## API endpoint
 
-- fastapi: Web framework
-- uvicorn: ASGI server
-- google-generativeai: Google Gemini AI
-- requests: HTTP zahtevi
-- beautifulsoup4: HTML parsing
+GET /travel-board
 
-## Primer izlaza
-
-API vraća JSON sa analizom svake slike i konačnim preporukama destinacija na osnovu zajedničkih tema.
+Analyzes the images in the images/ folder and returns destination recommendations.
