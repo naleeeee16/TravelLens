@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import PIL.Image
+from io import BytesIO
 
 def get_pinterest_board_images(board_url):
     print(f"--- Izvlačenje slika sa: {board_url} ---")
@@ -47,12 +49,41 @@ def get_pinterest_board_images(board_url):
         image_urls = list(set(re.findall(r'(https://i\.pinimg\.com/originals/[^\s"\'<>]+)', response.text)))
 
     return image_urls
+def prepare_images_for_gemini(url_list):
+    print("\n--- FILTRIRANJE I PRIPREMA SLIKA ---")
+    pil_images = []
+    
+    # Prolazimo kroz prvih 15 linkova da nađemo 4-5 kvalitetnih slika
+    count = 0
+    for url in url_list:
+        try:
+            res = requests.get(url, timeout=5)
+            if res.status_code != 200:
+                continue
 
+            img = PIL.Image.open(BytesIO(res.content))
+            
+            # PROVERA DIMENZIJA: Sve ispod 300x300 je verovatno ikonica ili baner
+            if img.width < 300 or img.height < 300:
+                print(f"[X] Preskačem (premaleno: {img.width}x{img.height}): {url}")
+                continue
+
+            # Konverzija u RGB (bitno za JPEG/OpenAI)
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+            
+            pil_images.append(img)
+            print(f"[OK] Prihvaćena slika {len(pil_images)}: {url}")
+
+        except Exception as e:
+            print(f"[!] Greška kod slike {url}: {e}")
+            
+    return pil_images
 # TESTIRANJE
 # Stavi link do nekog JAVNOG board-a
-test_url = "https://www.pinterest.com/natalijagvozden/travel/" # Zameni sa tvojim pravim URL-om board-a
-slike = get_pinterest_board_images(test_url)
+# test_url = "https://www.pinterest.com/natalijagvozden/t2/" # Zameni sa tvojim pravim URL-om board-a
+# slike = get_pinterest_board_images(test_url)
 
-print(f"\nPronađeno ukupno {len(slike)} slika:")
-for url in slike[:5]: # Ispisuje prvih 5
-    print(f" - {url}")
+# print(f"\nPronađeno ukupno {len(slike)} slika:")
+# for url in slike: # Ispisuje prvih 5
+#     print(f" - {url}")

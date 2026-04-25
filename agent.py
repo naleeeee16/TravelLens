@@ -1,128 +1,194 @@
 import os
-import base64
 import json
-from fastapi import FastAPI
-import google.generativeai as genai
+import base64
+import io
+from dotenv import load_dotenv
+from openai import OpenAI
+from pypinterest import get_pinterest_board_images, prepare_images_for_gemini
 
+load_dotenv()
 from skyscanner import get_flights_for_destinations
 
 app = FastAPI()
 
-# 🔑 GEMINI API KEY
-genai.configure(api_key="AIzaSyDoOnwTAb__mYOb7HxIRUCiG0rrfrc1E78")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Model verzija (2.5 ne postoji još uvek, 1.5-flash je aktuelna stabilna)
-model = genai.GenerativeModel("gemini-2.5-flash")
+def encode_image_to_base64(pil_image):
+    buffered = io.BytesIO()
+    pil_image.save(buffered, format="JPEG", quality=85)
+    return base64.b64encode(buffered.getvalue()).decode('utf-8')
 
-IMAGE_PATHS = [
-    "images/beach.jpeg",
-    "images/castle.jpg"
-]
+def main():
+    print("\n" + "="*50)
+    print(" TRAVELENS: VISION TO TEXT PIPELINE")
+    print("="*50)
 
-# -----------------------------
-# 1. IMAGE -> JSON FEATURES
-# -----------------------------
-def extract_features(image_path: str):
-    with open(image_path, "rb") as f:
-        img_bytes = f.read()
-    image_base64 = base64.b64encode(img_bytes).decode("utf-8")
-
-    prompt = """
-    Act as an expert travel discovery agent. Analyze this image.
-    Extract features, identify landmarks and suggest vibe.
+    url = input("\n[?] Paste Pinterest Board URL: ").strip()
     
-    Return the response ONLY as a JSON object with this exact structure:
+    step1_prompt = """
+    Act as a professional Travel Scouter and Cultural Geographer. 
+    Analyze the provided images to extract deep travel insights. 
+
+    Focus on identifying:
+    1. Architectural styles (e.g., Gothic, Haussmann, Brutalist, Tropical Modernism).
+    2. Geographic markers (e.g., coastal, alpine, dense urban, desert).
+    3. Culinary indicators (e.g., street food stalls, fine dining, vineyard).
+    4. Activity cues (e.g., hiking, shopping, museum-hopping, nightlife).
+    5. Color palette & Lighting (e.g., golden hour, neon-lit, pastel-toned).
+
+    Return ONLY a JSON object:
     {
-      "extracted_tags": ["tag1", "tag2"],
-      "landmark_found": "Name or None",
-      "primary_vibe": "Description of the travel style"
+      "extracted_tags": [
+          "Minimum 10 detailed tags covering: architecture, terrain, weather vibes, 
+          and specific cultural elements"
+      ],
+      "landmarks_found": ["Specific names or 'None'"],
+      "primary_vibe": "A sophisticated description of the travel experience (e.g., 'Luxury European slow-travel' or 'High-energy Asian urban exploration')",
+      "suggested_season": "Best time to visit based on the visual evidence"
     }
     """
 
-    response = model.generate_content(
-        [prompt, {"mime_type": "image/jpeg", "data": image_base64}],
-        generation_config={"response_mime_type": "application/json"}
-    )
+    # 1. Fetching (Ovo ostaje isto)
+    raw_urls = get_pinterest_board_images(url)
+    pil_slike = prepare_images_for_gemini(raw_urls)
     
-    return json.loads(response.text)
+    if not pil_slike:
+        print("[!] No images found. Pinterest might be blocking the request.")
+        return
 
-# -----------------------------
-# 2. JSON FEATURES -> JSON DESTINATIONS
-# -----------------------------
-def get_destinations(all_features_json):
-    context = json.dumps(all_features_json, indent=2)
+    # --- NOVI DEO: Umesto kolaža, pripremamo listu slika za OpenAI ---
+    print(f"[1/2] Step 1: Analyzing {len(pil_slike)} valid travel images...")    
+   
+    # Uzimamo prvih 5 slika sa boarda (to je sasvim dovoljno za vibe)
+    image_contents = []
+    for img in pil_slike[:5]:
+        b64 = encode_image_to_base64(img)
+        image_contents.append({
+            "type": "image_url",
+            "image_url": {"url": f"data:image/jpeg;base64,{b64}", "detail": "high"}
+        })
 
-    prompt = f"""
-    You are a travel expert. Based on these extracted features from multiple images:
-    {context}
+    # Dodajemo tekstualni prompt na početak liste
+    messages_content = [{"type": "text", "text": step1_prompt}] + image_contents
 
-    Find the intersection of these vibes and suggest 5 destinations.
-    Return ONLY a JSON object with this structure:
+    try:
+        response_1 = client.chat.completions.create(
+            model="gpt-4o", # Obavezno gpt-4o
+            messages=[
+                {
+                    "role": "user",
+                    "content": messages_content # Šaljemo celu listu slika
+                }
+            ],
+            response_format={ "type": "json_object" },
+            max_completion_tokens=500
+        )
+        visual_context = json.loads(response_1.choices[0].message.content)
+        print(f"      [✓] Analysis complete: {visual_context}...")
+    except Exception as e:
+        print(f"\n[✗] Step 1 Error: {e}")
+        return
+
+    # ---------------------------------------------------------
+    # KORAK 2: PREPORUKA DESTINACIJA (Samo TEKST - nema slike!)
+    # ---------------------------------------------------------
+    print("[2/2] Step 2: Generating destinations (Logic only)...")
+    
+    # Ovde šaljemo JSON iz prvog koraka kao tekstualni kontekst
+    print('Input user message for Step 2 (Logic):')
+    mess = input()
+
+    # Pretpostavljamo da je 'mess' ono što je korisnik ukucao
+    step2_prompt = f"""
+    You are a Strategic Travel Intelligence Engine. Your task is to find a range of destinations by synthesizing visual data and explicit user preferences.
+
+    Visual Context (The Vibe):
+    {json.dumps(visual_context, indent=2)}
+
+    User's Explicit Constraint (The Filter):
+    "{mess}"
+
+    MANDATORY LOGIC HIERARCHY:
+
+    1. USER OVERRIDE (CRITICAL): The User's Explicit Constraint is the absolute filter.
+       - If the user says "Montenegrin coast", ONLY suggest cities in Montenegro (Budva, Kotor, Herceg Novi, Perast, Ulcinj). 
+       - Do NOT limit yourself to the most famous city only.
+
+    2. DIVERSITY REQUIREMENT: You MUST suggest exactly 5 different destinations that fit the criteria. 
+       - Even if one city (like Budva) is a perfect match, find 4 others that share the same architectural and coastal DNA within the requested region.
+
+    3. GRADIENT OF MATCHING:
+       - Rank #1: The absolute best match for both images and text.
+       - Rank #2-5: "Hidden gems" or neighboring towns that satisfy the same visual tags (red roofs, stone streets, beach).
+
+    4. REASONING: For each city, explain its unique take on the vibe (e.g., "Kotor offers the fortified stone walls from your images but with a fjord-like backdrop").
+
+    Return ONLY a JSON object:
     {{
-      "common_theme": "Description of the shared aesthetic",
+      "common_theme": "Description of the vibe within the requested region",
       "top_destinations": [
         {{
           "city": "City, Country",
-          "reason": "Why it matches both architecture and nature tags",
-          "match_percentage": 95
-        }}
+          "reason": "Specific link to images and user request",
+          "match_percentage":  - percentage score (100% = perfect match to both vibe and user request)
+        }},
+        {{ "city": "...", "reason": "...", "match_percentage": 90 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 85 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 80 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 75 }}
       ]
     }}
     """
 
-    response = model.generate_content(
-        prompt,
-        generation_config={"response_mime_type": "application/json"}
-    )
-    return json.loads(response.text)
-
-# -----------------------------
-# 3. MAIN ENDPOINT
-# -----------------------------
-@app.get("/travel-board")
-def travel_board():
-    all_features = []
-
-    print("\n" + "="*50)
-    print("KORAK 1: ANALIZA POJEDINAČNIH SLIKA")
-    print("="*50)
-
-    for img in IMAGE_PATHS:
-        try:
-            feature_data = extract_features(img)
-            all_features.append(feature_data)
-            
-            # ISPIS U TERMINALU ZA SVAKU SLIKU
-            print(f"\n🖼️ Slika: {img}")
-            print(json.dumps(feature_data, indent=4, ensure_ascii=False))
-            
-        except Exception as e:
-            print(f"❌ Greška kod {img}: {e}")
-
-    print("\n" + "="*50)
-    print("KORAK 2: KONAČNE PREPORUKE (VIBE MERGE)")
-    print("="*50)
-    
-    if not all_features:
-        return {"error": "Nijedna slika nije obrađena."}
-
     try:
-        final_recommendations = get_destinations(all_features)
-        
-        # ISPIS FINALNOG REZULTATA U TERMINALU
-        print("\n🌍 PREDLOŽENE DESTINACIJE:")
-        print(json.dumps(final_recommendations, indent=4, ensure_ascii=False))
-        print("\n" + "="*50)
+        # PRIMETI: Ovde nema image_url, samo obična tekstualna poruka
+        # --- IZMENA U KORAKU 2 ---
+        response_2 = client.chat.completions.create(
+            model="gpt-4o-mini",  # Koristi stabilan mini model za logiku
+            messages=[
+                {"role": "system", "content": "You are a professional travel consultant."},
+                {"role": "user", "content": step2_prompt}
+            ],
+            response_format={ "type": "json_object" },
+            max_completion_tokens=1000
+        )
+        final_data = json.loads(response_2.choices[0].message.content)
 
-        # 2. Izvuci samo imena gradova iz JSON-a koji je vratio Gemini
-        cities = [d['city'] for d in final_recommendations['top_destinations']]
+        # final_recommendations = get_destinations(all_features)
         
-        # 3. Pozovi Skyscanner funkciju
-        flights = get_flights_for_destinations(cities)
-        return {
-            "vibe_analysis": final_recommendations,
-            "flight_offers": flights
-        }
+        # # ISPIS FINALNOG REZULTATA U TERMINALU
+        # print("\n🌍 PREDLOŽENE DESTINACIJE:")
+        # print(json.dumps(final_recommendations, indent=4, ensure_ascii=False))
+        # print("\n" + "="*50)
+
+        # # 2. Izvuci samo imena gradova iz JSON-a koji je vratio Gemini
+        # cities = [d['city'] for d in final_recommendations['top_destinations']]
+        
+        # # 3. Pozovi Skyscanner funkciju
+        # flights = get_flights_for_destinations(cities)
     except Exception as e:
-        print(f"❌ Greška u generisanju preporuka: {e}")
-        return {"error": str(e)}
+        print(f"\n[✗] Step 2 Error: {e}")
+        return
+
+    # ---------------------------------------------------------
+    # FINALNI ISPIS
+    # ---------------------------------------------------------
+    print("\n" + "="*60)
+    print(f"THEME: {final_data.get('common_theme', 'N/A')}")
+    print("-"*60)
+    print(f"{'CITY':<25} | {'MATCH':<7} | {'REASON'}")
+    print("-"*60)
+    
+    for d in final_data.get('top_destinations', []):
+        city = d.get('city', 'Unknown')
+        match = f"{d.get('match_percentage')}%"
+        reason = d.get('reason', 'N/A')
+        print(f"{city:<25} | {match:<7} | {reason}")
+        
+    print("="*60)
+    print("\n[✓] Done! (Step 1 used Vision, Step 2 used Text logic)")
+
+if __name__ == "__main__":
+
+    while (True):
+        main()
