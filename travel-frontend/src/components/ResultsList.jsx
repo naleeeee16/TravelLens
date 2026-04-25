@@ -25,7 +25,7 @@ export default function ResultsList({
           ← Back
         </button>
         <div className="header-content">
-          <h2>🎯 Your Personalized Destinations</h2>
+          <h2>Your Personalized Destinations</h2>
           {commonTheme && (
             <div className="theme-card">
               <p className="theme-label">Travel Theme</p>
@@ -81,7 +81,7 @@ export default function ResultsList({
 
               {destination.primary_vibe && (
                 <p className="destination-vibe">
-                  ✨ {destination.primary_vibe}
+                  {destination.primary_vibe}
                 </p>
               )}
 

@@ -55,13 +55,13 @@ export default function InputMode({ onSubmit, isLoading }) {
           className={`tab-button ${activeTab === 'upload' ? 'active' : ''}`}
           onClick={() => { setActiveTab('upload'); setError(''); }}
         >
-          📸 Upload Images
+          Upload Images
         </button>
         <button
           className={`tab-button ${activeTab === 'pinterest' ? 'active' : ''}`}
           onClick={() => { setActiveTab('pinterest'); setError(''); }}
         >
-          📌 Pinterest Board
+          Pinterest Board
         </button>
       </div>
 
@@ -78,7 +78,7 @@ export default function InputMode({ onSubmit, isLoading }) {
               disabled={isLoading}
             />
             <label htmlFor="file-input" className="upload-label">
-              <div className="upload-icon">🖼️</div>
+              <div className="upload-icon"></div>
               <h3>Drop images here or click to browse</h3>
               <p>Upload photos of destinations, architecture, or vibes you like</p>
               <p className="upload-hint">JPG, PNG up to 5MB each</p>
@@ -97,7 +97,7 @@ export default function InputMode({ onSubmit, isLoading }) {
                       onClick={() => removeImage(img.id)}
                       disabled={isLoading}
                     >
-                      ✕
+                      ×
                     </button>
                     <p className="image-name">{img.name}</p>
                   </div>
@@ -119,7 +119,7 @@ export default function InputMode({ onSubmit, isLoading }) {
                 Analyzing...
               </>
             ) : (
-              <>🚀 Find Destinations</>
+              <>Find Destinations</>
             )}
           </button>
         </div>
@@ -132,7 +132,7 @@ export default function InputMode({ onSubmit, isLoading }) {
             <div className="input-group">
               <label htmlFor="pinterest-url">Pinterest Board URL</label>
               <div className="url-input-wrapper">
-                <span className="url-icon">📌</span>
+                <span className="url-icon"></span>
                 <input
                   type="text"
                   id="pinterest-url"
@@ -151,7 +151,7 @@ export default function InputMode({ onSubmit, isLoading }) {
             </div>
 
             <div className="pinterest-info">
-              <h4>📌 How to find your board URL:</h4>
+              <h4>How to find your board URL:</h4>
               <ol>
                 <li>Go to your board on Pinterest</li>
                 <li>Click the board name or settings</li>
@@ -173,7 +173,7 @@ export default function InputMode({ onSubmit, isLoading }) {
                   Fetching Board...
                 </>
               ) : (
-                <>🚀 Analyze Board</>
+                <>Analyze Board</>
               )}
             </button>
           </div>
