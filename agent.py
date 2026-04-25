@@ -4,6 +4,8 @@ import json
 from fastapi import FastAPI
 import google.generativeai as genai
 
+from skyscanner import get_flights_for_destinations
+
 app = FastAPI()
 
 # 🔑 GEMINI API KEY
@@ -112,9 +114,14 @@ def travel_board():
         print(json.dumps(final_recommendations, indent=4, ensure_ascii=False))
         print("\n" + "="*50)
 
+        # 2. Izvuci samo imena gradova iz JSON-a koji je vratio Gemini
+        cities = [d['city'] for d in final_recommendations['top_destinations']]
+        
+        # 3. Pozovi Skyscanner funkciju
+        flights = get_flights_for_destinations(cities)
         return {
-            "user_vibe_analysis": all_features,
-            "travel_plan": final_recommendations
+            "vibe_analysis": final_recommendations,
+            "flight_offers": flights
         }
     except Exception as e:
         print(f"❌ Greška u generisanju preporuka: {e}")
