@@ -151,7 +151,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>TravelLens © 2024 | Discover your next adventure powered by AI</p>
+        <p>TravelLens © 2026 | Discover your next adventure powered by SkyScanner</p>
       </footer>
     </div>
   )

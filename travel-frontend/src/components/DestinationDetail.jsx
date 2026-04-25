@@ -20,16 +20,7 @@ export default function DestinationDetail({
       <div className="detail-content">
         {/* Hero Section */}
         <div className="hero-section">
-          <div className="hero-badge">
-            <span className="badge-text">AI Recommendation</span>
-          </div>
           <h1 className="destination-title">{destination.city}</h1>
-          <div className="match-indicator">
-            <div className="match-bar-container">
-              <div className="match-bar" style={{width: `${destination.match_percentage || 85}%`}}></div>
-            </div>
-            <span className="match-text">{destination.match_percentage || 85}% Match to Your Preferences</span>
-          </div>
         </div>
 
         {/* Main Grid */}
@@ -99,10 +90,6 @@ export default function DestinationDetail({
             {/* Destination Stats (if available) */}
             <div className="stats-card">
               <h3>Destination Info</h3>
-              <div className="stat-item">
-                <span className="stat-label">Match Score</span>
-                <span className="stat-value">{destination.match_percentage || 85}%</span>
-              </div>
               <div className="stat-item">
                 <span className="stat-label">AI Confidence</span>
                 <span className="stat-value">High</span>

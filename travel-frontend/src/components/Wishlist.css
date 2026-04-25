@@ -217,31 +217,38 @@
 }
 
 .btn-icon {
-  background: none;
-  border: none;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-subtle);
   cursor: pointer;
-  font-size: 1.1rem;
-  padding: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  padding: 0.35rem 0.6rem;
   margin-left: 0.35rem;
   border-radius: 6px;
   transition: all var(--transition-fast);
-  display: inline-block;
+  display: inline-flex;
 }
 
 .btn-icon:hover {
-  transform: scale(1.15);
+  transform: translateY(-1px);
+  color: var(--text-primary);
 }
 
 .btn-icon.view:hover {
-  background: rgba(99, 102, 241, 0.15);
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.35);
 }
 
 .btn-icon.flights:hover {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.35);
 }
 
 .btn-icon.remove:hover {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* Wishlist Actions */

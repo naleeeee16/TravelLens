@@ -8,11 +8,11 @@ export default function ResultsList({
   onBack,
   loading
 }) {
-  const [sortBy, setSortBy] = useState('match') // 'match' or 'alphabetical'
+  const [sortBy, setSortBy] = useState('recommended') // 'recommended' or 'alphabetical'
 
   const sortedDestinations = [...destinations].sort((a, b) => {
-    if (sortBy === 'match') {
-      return (b.match_percentage || 0) - (a.match_percentage || 0)
+    if (sortBy === 'recommended') {
+      return 0
     }
     return a.city.localeCompare(b.city)
   })
@@ -40,7 +40,7 @@ export default function ResultsList({
         <div className="sort-controls">
           <label>Sort by:</label>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="match">Match Percentage ↓</option>
+            <option value="recommended">Recommended</option>
             <option value="alphabetical">Alphabetical A-Z</option>
           </select>
         </div>
@@ -57,14 +57,6 @@ export default function ResultsList({
             className="destination-card"
             onClick={() => onSelectDestination(destination)}
           >
-            {/* Match Badge */}
-            <div className="match-badge">
-              <div className="match-percentage">
-                {destination.match_percentage || 85}%
-              </div>
-              <div className="match-label">Match</div>
-            </div>
-
             {/* Card Content */}
             <div className="card-content">
               <h3 className="destination-name">

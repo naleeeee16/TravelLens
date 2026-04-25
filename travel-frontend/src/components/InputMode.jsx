@@ -5,6 +5,7 @@ export default function InputMode({ onSubmit, isLoading }) {
   const [activeTab, setActiveTab] = useState('upload') // 'upload' or 'pinterest'
   const [uploadedImages, setUploadedImages] = useState([])
   const [pinterestUrl, setPinterestUrl] = useState('')
+  const [desiredFeatures, setDesiredFeatures] = useState('')
   const [error, setError] = useState('')
 
   const handleImageUpload = (e) => {
@@ -32,7 +33,7 @@ export default function InputMode({ onSubmit, isLoading }) {
       setError('Please enter a valid Pinterest URL')
       return
     }
-    onSubmit({ source: 'pinterest', url: pinterestUrl })
+    onSubmit({ source: 'pinterest', url: pinterestUrl, desired_features: desiredFeatures.trim() })
   }
 
   const handleImageSubmit = () => {
@@ -40,7 +41,7 @@ export default function InputMode({ onSubmit, isLoading }) {
       setError('Please upload at least one image')
       return
     }
-    onSubmit({ source: 'images', images: uploadedImages })
+    onSubmit({ source: 'images', images: uploadedImages, desired_features: desiredFeatures.trim() })
   }
 
   return (
@@ -50,18 +51,39 @@ export default function InputMode({ onSubmit, isLoading }) {
         <p>Choose between uploading images or using a Pinterest board</p>
       </div>
 
+      <div className="trip-features-section">
+        <label htmlFor="desired-features">What would you like on this trip?</label>
+        <input
+          id="desired-features"
+          type="text"
+          placeholder="Examples: beach + nightlife, cozy cafes, hiking trails, less crowds..."
+          value={desiredFeatures}
+          onChange={(e) => setDesiredFeatures(e.target.value)}
+          disabled={isLoading}
+        />
+        <p className="trip-features-hint">
+          Optional: add preferred features, activities, or travel vibe.
+        </p>
+      </div>
+
       <div className="tabs">
         <button
           className={`tab-button ${activeTab === 'upload' ? 'active' : ''}`}
           onClick={() => { setActiveTab('upload'); setError(''); }}
         >
-          Upload Images
+          <span className="tab-icon upload-icon-min" aria-hidden="true"></span>
+          <span>Upload Images</span>
         </button>
         <button
           className={`tab-button ${activeTab === 'pinterest' ? 'active' : ''}`}
           onClick={() => { setActiveTab('pinterest'); setError(''); }}
         >
-          Pinterest Board
+          <span className="tab-icon pinterest-logo-mini" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+              <path d="M12 2C6.48 2 2 6.48 2 12c0 4.19 2.58 7.78 6.23 9.27-.09-.79-.17-2.01.03-2.88.18-.78 1.17-4.98 1.17-4.98s-.3-.61-.3-1.51c0-1.41.82-2.47 1.84-2.47.87 0 1.29.65 1.29 1.43 0 .87-.55 2.17-.84 3.38-.24 1.02.52 1.84 1.53 1.84 1.84 0 3.08-2.37 3.08-5.18 0-2.14-1.44-3.74-4.06-3.74-2.96 0-4.8 2.2-4.8 4.66 0 .85.25 1.45.64 1.91.18.21.2.29.14.53-.05.17-.15.6-.2.77-.06.24-.25.33-.46.24-1.28-.52-1.88-1.92-1.88-3.5 0-2.6 2.2-5.72 6.56-5.72 3.5 0 5.8 2.53 5.8 5.25 0 3.59-1.99 6.27-4.92 6.27-.98 0-1.89-.53-2.2-1.12 0 0-.53 2.08-.64 2.5-.23.85-.67 1.7-1.08 2.36.96.28 1.97.43 3.02.43 5.52 0 10-4.48 10-10S17.52 2 12 2z" />
+            </svg>
+          </span>
+          <span>Pinterest Board</span>
         </button>
       </div>
 
