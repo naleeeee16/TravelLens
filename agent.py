@@ -9,7 +9,7 @@ from pypinterest import get_pinterest_board_images, prepare_images_for_gemini
 load_dotenv()
 from skyscanner import get_flights_for_destinations
 
-app = FastAPI()
+#app = FastAPI()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -100,7 +100,7 @@ def main():
 
     # Pretpostavljamo da je 'mess' ono što je korisnik ukucao
     step2_prompt = f"""
-    You are a Strategic Travel Intelligence Engine. Your task is to find a range of destinations by synthesizing visual data and explicit user preferences.
+    You are a Strategic Travel Intelligence Engine. Your task is to calculate and rank exactly 6 destinations using a strict scoring algorithm.
 
     Visual Context (The Vibe):
     {json.dumps(visual_context, indent=2)}
@@ -108,34 +108,33 @@ def main():
     User's Explicit Constraint (The Filter):
     "{mess}"
 
-    MANDATORY LOGIC HIERARCHY:
+    SCORING ALGORITHM (Strictly follow this for 'match_percentage'):
+    The total score is 100 points, divided into two categories:
+    1. FEATURES SCORE (50%): 
+       - Formula: (50 / total_number_of_extracted_tags) * (tags_present_at_destination)
+    2. LANDMARKS SCORE (50%):
+       - Formula: (50 / total_number_of_landmarks_found) * (landmarks_actually_in_this_city)
+       - Note: If 'landmarks_found' is empty, redistribute this 50% to the 'Vibe/Aesthetic Consistency' with the images.
 
-    1. USER OVERRIDE (CRITICAL): The User's Explicit Constraint is the absolute filter.
-       - If the user says "Montenegrin coast", ONLY suggest cities in Montenegro (Budva, Kotor, Herceg Novi, Perast, Ulcinj). 
-       - Do NOT limit yourself to the most famous city only.
-
-    2. DIVERSITY REQUIREMENT: You MUST suggest exactly 5 different destinations that fit the criteria. 
-       - Even if one city (like Budva) is a perfect match, find 4 others that share the same architectural and coastal DNA within the requested region.
-
-    3. GRADIENT OF MATCHING:
-       - Rank #1: The absolute best match for both images and text.
-       - Rank #2-5: "Hidden gems" or neighboring towns that satisfy the same visual tags (red roofs, stone streets, beach).
-
-    4. REASONING: For each city, explain its unique take on the vibe (e.g., "Kotor offers the fortified stone walls from your images but with a fjord-like backdrop").
+    MANDATORY LOGIC:
+    1. USER OVERRIDE: Every result MUST be within: "{mess}".
+    2. QUANTITY: You MUST return exactly 6 distinct destinations.
+    3. CALCULATION: In the 'reason' field, briefly mention why the score is such (e.g., "Matches 4/5 features and contains the main landmark").
 
     Return ONLY a JSON object:
     {{
-      "common_theme": "Description of the vibe within the requested region",
+      "common_theme": "Description of the vibe",
       "top_destinations": [
         {{
           "city": "City, Country",
-          "reason": "Specific link to images and user request",
-          "match_percentage":  - percentage score (100% = perfect match to both vibe and user request)
+          "reason": "Explain the match based on the 50/50 formula",
+          "match_percentage": "Integer value calculated by the algorithm"
         }},
-        {{ "city": "...", "reason": "...", "match_percentage": 90 }},
-        {{ "city": "...", "reason": "...", "match_percentage": 85 }},
-        {{ "city": "...", "reason": "...", "match_percentage": 80 }},
-        {{ "city": "...", "reason": "...", "match_percentage": 75 }}
+        {{ "city": "...", "reason": "...", "match_percentage": 0 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 0 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 0 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 0 }},
+        {{ "city": "...", "reason": "...", "match_percentage": 0 }}
       ]
     }}
     """
@@ -189,6 +188,5 @@ def main():
     print("\n[✓] Done! (Step 1 used Vision, Step 2 used Text logic)")
 
 if __name__ == "__main__":
-
     while (True):
         main()
