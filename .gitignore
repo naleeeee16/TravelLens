@@ -1,0 +1,20 @@
+# Virtuelno okruženje (najbitnije)
+.venv/
+venv/
+ENV/
+env/
+
+# Python bafer i kompajlirani fajlovi
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# VS Code podešavanja
+.vscode/
+
+# Environment varijable (ako budeš koristila .env fajlove za ključeve)
+.env
+
+# Operativni sistem
+.DS_Store
+Thumbs.db
