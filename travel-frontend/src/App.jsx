@@ -5,7 +5,6 @@ import ResultsList from './components/ResultsList'
 import DestinationDetail from './components/DestinationDetail'
 import Wishlist from './components/Wishlist'
 import Flights from './components/Flights'
-import Reservations from './components/Reservations'
 
 // Mock data for testing removed
 
@@ -16,7 +15,7 @@ function App() {
   const [wishlist, setWishlist] = useState([])
   const [loading, setLoading] = useState(false)
   const [commonTheme, setCommonTheme] = useState('')
-  const [reservations, setReservations] = useState([])
+  const [previousView, setPreviousView] = useState('wishlist')
   
   const handleInputSubmit = async (inputData) => {
     setLoading(true)
@@ -62,18 +61,8 @@ function App() {
 
   const handleFindFlights = (destination) => {
     setSelectedDestination(destination)
+    setPreviousView(currentView)
     setCurrentView('flights')
-  }
-
-  const handleSaveReservation = (flight) => {
-    if (!reservations.find(res => res.booking_link === flight.booking_link)) {
-      setReservations([...reservations, flight])
-      alert('Flight saved to reservations!')
-    }
-  }
-
-  const handleRemoveReservation = (link) => {
-    setReservations(reservations.filter(res => res.booking_link !== link))
   }
 
   return (
@@ -96,12 +85,6 @@ function App() {
               onClick={() => setCurrentView('wishlist')}
             >
               Wishlist ({wishlist.length})
-            </button>
-            <button 
-              className={`nav-btn ${currentView === 'reservations' ? 'active' : ''}`}
-              onClick={() => setCurrentView('reservations')}
-            >
-              Reservations ({reservations.length})
             </button>
           </nav>
         </div>
@@ -147,15 +130,7 @@ function App() {
         {currentView === 'flights' && selectedDestination && (
           <Flights 
             destination={selectedDestination}
-            onBack={() => setCurrentView('wishlist')}
-            onSaveReservation={handleSaveReservation}
-          />
-        )}
-
-        {currentView === 'reservations' && (
-          <Reservations 
-            items={reservations}
-            onRemove={handleRemoveReservation}
+            onBack={() => setCurrentView(previousView)}
           />
         )}
       </main>

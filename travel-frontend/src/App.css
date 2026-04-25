@@ -36,8 +36,15 @@
 }
 
 @keyframes floatIcon {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .logo h1 {
@@ -207,7 +214,9 @@ textarea {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
