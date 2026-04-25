@@ -7,6 +7,9 @@ from openai import OpenAI
 from pypinterest import get_pinterest_board_images, prepare_images_for_gemini
 
 load_dotenv()
+from skyscanner import get_flights_for_destinations
+
+app = FastAPI()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -150,6 +153,19 @@ def main():
             max_completion_tokens=1000
         )
         final_data = json.loads(response_2.choices[0].message.content)
+
+        # final_recommendations = get_destinations(all_features)
+        
+        # # ISPIS FINALNOG REZULTATA U TERMINALU
+        # print("\n🌍 PREDLOŽENE DESTINACIJE:")
+        # print(json.dumps(final_recommendations, indent=4, ensure_ascii=False))
+        # print("\n" + "="*50)
+
+        # # 2. Izvuci samo imena gradova iz JSON-a koji je vratio Gemini
+        # cities = [d['city'] for d in final_recommendations['top_destinations']]
+        
+        # # 3. Pozovi Skyscanner funkciju
+        # flights = get_flights_for_destinations(cities)
     except Exception as e:
         print(f"\n[✗] Step 2 Error: {e}")
         return
