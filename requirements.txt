@@ -3,3 +3,6 @@ uvicorn
 google-generativeai
 requests
 beautifulsoup4
+Pillow
+dotenv
+torch
