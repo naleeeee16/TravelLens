@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import InputMode from './components/InputMode'
 import ResultsList from './components/ResultsList'
@@ -9,13 +9,32 @@ import Flights from './components/Flights'
 // Mock data for testing removed
 
 function App() {
-  const [currentView, setCurrentView] = useState('input')
-  const [destinations, setDestinations] = useState([])
-  const [selectedDestination, setSelectedDestination] = useState(null)
-  const [wishlist, setWishlist] = useState([])
+  const [currentView, setCurrentView] = useState(() => localStorage.getItem('travelens_view') || 'input')
+  const [destinations, setDestinations] = useState(() => {
+    const saved = localStorage.getItem('travelens_destinations')
+    return saved ? JSON.parse(saved) : []
+  })
+  const [selectedDestination, setSelectedDestination] = useState(() => {
+    const saved = localStorage.getItem('travelens_selected')
+    return saved ? JSON.parse(saved) : null
+  })
+  const [wishlist, setWishlist] = useState(() => {
+    const saved = localStorage.getItem('travelens_wishlist')
+    return saved ? JSON.parse(saved) : []
+  })
   const [loading, setLoading] = useState(false)
-  const [commonTheme, setCommonTheme] = useState('')
-  const [previousView, setPreviousView] = useState('wishlist')
+  const [commonTheme, setCommonTheme] = useState(() => localStorage.getItem('travelens_theme') || '')
+  const [previousView, setPreviousView] = useState(() => localStorage.getItem('travelens_prev_view') || 'wishlist')
+  
+  // Persist state to localStorage
+  useEffect(() => {
+    localStorage.setItem('travelens_view', currentView)
+    localStorage.setItem('travelens_destinations', JSON.stringify(destinations))
+    localStorage.setItem('travelens_selected', JSON.stringify(selectedDestination))
+    localStorage.setItem('travelens_wishlist', JSON.stringify(wishlist))
+    localStorage.setItem('travelens_theme', commonTheme)
+    localStorage.setItem('travelens_prev_view', previousView)
+  }, [currentView, destinations, selectedDestination, wishlist, commonTheme, previousView])
   
   const handleInputSubmit = async (inputData) => {
     setLoading(true)
