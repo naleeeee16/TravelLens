@@ -1,6 +1,6 @@
 # TravelLens
 
-TravelLens is an AI-powered travel discovery application that analyzes images using Google Gemini AI to extract features and recommend destinations based on shared themes.
+TraveLens is an AI-powered travel discovery application that analyzes images using OpenAi to extract features and recommend destinations based on shared themes.
 
 ## Installation
 
@@ -9,11 +9,15 @@ pip install -r requirements.txt
 ```
 
 ## Run the server
-
+### Backend
+```bash
 uvicorn agent:app --reload
+```
+### Frontend
+```bash
+cd ./travel-frontend
+npm install
+npm run dev
+```
 
-## API endpoint
 
-GET /travel-board
-
-Analyzes the images in the images/ folder and returns destination recommendations.
