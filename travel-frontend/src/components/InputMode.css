@@ -69,9 +69,9 @@
 }
 
 .tab-button.active {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.85), rgba(99, 102, 241, 0.85));
+  background: linear-gradient(135deg, rgba(178, 58, 58, 0.85), rgba(212, 106, 106, 0.85));
   color: white;
-  border-color: rgba(139, 92, 246, 0.95);
+  border-color: rgba(178, 58, 58, 0.95);
   box-shadow: var(--shadow-glow);
 }
 
@@ -133,12 +133,12 @@
 
 /* Desired Features */
 .trip-features-section {
-  background: linear-gradient(160deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.06)) var(--bg-card);
-  border: 1px solid rgba(139, 92, 246, 0.45);
+  background: linear-gradient(160deg, rgba(178, 58, 58, 0.1), rgba(212, 106, 106, 0.06)) var(--bg-card);
+  border: 1px solid rgba(178, 58, 58, 0.45);
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.18), 0 10px 24px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0 0 1px rgba(178, 58, 58, 0.18), 0 10px 24px rgba(100, 80, 70, 0.08);
 }
 
 .trip-features-section label {
@@ -150,13 +150,13 @@
 
 .trip-features-section input {
   width: 100%;
-  border: 1px solid rgba(139, 92, 246, 0.58);
-  background: rgba(16, 24, 38, 0.8);
+  border: 1px solid rgba(178, 58, 58, 0.58);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .trip-features-section input:focus {
-  border-color: rgba(139, 92, 246, 0.85);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.22);
+  border-color: rgba(178, 58, 58, 0.85);
+  box-shadow: 0 0 0 3px rgba(178, 58, 58, 0.22);
 }
 
 .trip-features-hint {
@@ -365,7 +365,7 @@
 
 /* Pinterest Info */
 .pinterest-info {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(212, 106, 106, 0.1) 0%, rgba(178, 58, 58, 0.1) 100%);
   padding: 1.25rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -391,9 +391,9 @@
 
 /* Error Message */
 .error-message {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  background: rgba(224, 122, 95, 0.15);
+  border: 1px solid rgba(224, 122, 95, 0.3);
+  color: #c95d46;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;

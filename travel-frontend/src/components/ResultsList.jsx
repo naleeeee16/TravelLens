@@ -1,30 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './ResultsList.css'
 
 function DestinationCard({ destination, onSelect }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const images = destination.images ? destination.images.slice(0, 2) : [];
+
   const handleNextImage = (e) => {
     e.stopPropagation();
-    if (destination.images && destination.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev + 1) % destination.images.length);
+    if (images.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }
   };
 
   const handlePrevImage = (e) => {
     e.stopPropagation();
-    if (destination.images && destination.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev - 1 + destination.images.length) % destination.images.length);
+    if (images.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
     }
   };
 
   return (
     <div className="destination-card" onClick={() => onSelect(destination)}>
-      {/* Carousel */}
-      {destination.images && destination.images.length > 0 && (
+      {/* Destination Image */}
+      {images.length > 0 && (
         <div className="card-carousel">
           <img 
-            src={destination.images[currentImageIndex].url} 
+            src={images[currentImageIndex].url} 
             alt={destination.city} 
             className="carousel-image"
           />
@@ -34,18 +36,11 @@ function DestinationCard({ destination, onSelect }) {
               <span className="match-label">Match</span>
             </div>
           )}
-          {destination.images.length > 1 && (
-            <>
-              <div className="carousel-controls">
-                <button className="carousel-btn prev" onClick={handlePrevImage}>‹</button>
-                <button className="carousel-btn next" onClick={handleNextImage}>›</button>
-              </div>
-              <div className="carousel-dots">
-                {destination.images.map((_, idx) => (
-                  <span key={idx} className={`dot ${idx === currentImageIndex ? 'active' : ''}`} />
-                ))}
-              </div>
-            </>
+          {images.length > 1 && (
+            <div className="carousel-controls">
+              <button className="carousel-btn prev" onClick={handlePrevImage}>‹</button>
+              <button className="carousel-btn next" onClick={handleNextImage}>›</button>
+            </div>
           )}
         </div>
       )}

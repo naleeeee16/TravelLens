@@ -92,15 +92,7 @@ export default function Wishlist({
             </table>
           </div>
 
-          {/* Action Bar */}
-          <div className="wishlist-actions">
-            <button className="btn-primary large">
-              Export Wishlist
-            </button>
-            <button className="btn-secondary large">
-              Book All Flights
-            </button>
-          </div>
+
         </div>
       )}
     </div>

@@ -135,7 +135,10 @@
   padding: 1.5rem;
   border-radius: 12px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 1rem;
   border: 1px solid var(--border-subtle);
 }
@@ -185,12 +188,11 @@
 
 /* CTA Card */
 .glass-panel {
-  background: rgba(30, 30, 35, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .cta-card h3 {

@@ -1,4 +1,34 @@
+import { useState, useEffect } from 'react'
 import './DestinationDetail.css'
+
+function DetailHero({ destination }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!destination.images || destination.images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % destination.images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [destination.images]);
+
+  return (
+    <div className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+      {destination.images && destination.images.length > 0 && (
+        <img 
+          src={destination.images[currentImageIndex].url} 
+          alt={destination.city} 
+          style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '12px', marginBottom: '20px' }}
+        />
+      )}
+      <div className="hero-badge">{destination.match_percentage}% Match</div>
+      <h1 className="destination-title">{destination.city}</h1>
+      {destination.primary_vibe && (
+        <p className="hero-vibe">{destination.primary_vibe}</p>
+      )}
+    </div>
+  );
+}
 
 export default function DestinationDetail({
   destination,
@@ -19,13 +49,7 @@ export default function DestinationDetail({
       {/* Main Content */}
       <div className="detail-content">
         {/* Hero Section */}
-        <div className="hero-section">
-          <div className="hero-badge">{destination.match_percentage}% Match</div>
-          <h1 className="destination-title">{destination.city}</h1>
-          {destination.primary_vibe && (
-            <p className="hero-vibe">{destination.primary_vibe}</p>
-          )}
-        </div>
+        <DetailHero destination={destination} />
 
         {/* Main Grid */}
         <div className="detail-grid">
@@ -43,7 +67,6 @@ export default function DestinationDetail({
             <div className="info-cards-row">
               {destination.suggested_season && (
                 <div className="info-card">
-                  <span className="info-icon">☀️</span>
                   <div>
                     <span className="info-label">Best Time to Visit</span>
                     <span className="info-value">{destination.suggested_season}</span>
@@ -51,7 +74,6 @@ export default function DestinationDetail({
                 </div>
               )}
               <div className="info-card">
-                <span className="info-icon">🎯</span>
                 <div>
                   <span className="info-label">Match Score</span>
                   <span className="info-value">{destination.match_percentage}% Match</span>
@@ -96,7 +118,7 @@ export default function DestinationDetail({
               </div>
 
               <div className="info-box">
-                <h4>✈️ Next Steps</h4>
+                <h4>Next Steps</h4>
                 <p>Click "Find Flights" to search for the best deals from your location</p>
               </div>
             </div>

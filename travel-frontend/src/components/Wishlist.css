@@ -132,7 +132,7 @@
 
 .wishlist-table th {
   padding: 1rem 1.25rem;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
@@ -157,6 +157,7 @@
 .wishlist-table td {
   padding: 1rem 1.25rem;
   vertical-align: middle;
+  text-align: center;
 }
 
 /* Destination Cell */
@@ -214,7 +215,7 @@
 
 /* Actions Cell */
 .actions-cell {
-  text-align: right;
+  text-align: center;
 }
 
 .btn-icon {
@@ -255,45 +256,7 @@
   color: var(--danger);
 }
 
-/* Wishlist Actions */
-.wishlist-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
 
-.btn-primary.large,
-.btn-secondary.large {
-  padding: 0.9rem 2.25rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
-}
-
-.btn-primary.large {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border: none;
-}
-
-.btn-primary.large:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
-  background: var(--accent-secondary);
-}
-
-.btn-secondary.large {
-  background: transparent;
-  color: var(--text-primary);
-  border: 2px solid var(--border-strong);
-}
-
-.btn-secondary.large:hover {
-  background: rgba(229, 152, 155, 0.1);
-  border-color: var(--accent-secondary);
-  transform: translateY(-2px);
-}
 
 /* Responsive */
 @media (max-width: 1024px) {

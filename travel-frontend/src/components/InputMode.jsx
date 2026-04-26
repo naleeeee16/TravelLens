@@ -62,23 +62,11 @@ export default function InputMode({ onSubmit, isLoading }) {
   return (
     <div className="input-mode-container">
       <div className="input-header">
+        <p style={{ fontSize: '1.275em', fontStyle: 'italic', marginBottom: '5px' }}>Turn your travel inspiration into real destinations.</p>
         <h2>How would you like to find your next destination?</h2>
       </div>
 
-      <div className="trip-features-section">
-        <label htmlFor="desired-features">
-          What would you like on this trip?
-          <span className="optional-badge">OPTIONAL</span>
-        </label>
-        <input
-          id="desired-features"
-          type="text"
-          placeholder="Examples: beach + nightlife, cozy cafes, hiking trails, less crowds..."
-          value={desiredFeatures}
-          onChange={(e) => setDesiredFeatures(e.target.value)}
-          disabled={isLoading}
-        />
-      </div>
+
 
       <div className="tabs">
         <button
@@ -144,6 +132,21 @@ export default function InputMode({ onSubmit, isLoading }) {
 
           {error && <div className="error-message">{error}</div>}
 
+          <div className="trip-features-section" style={{ marginTop: '24px', marginBottom: '24px' }}>
+            <label htmlFor="desired-features">
+              What would you like on this trip?
+              <span className="optional-badge">OPTIONAL</span>
+            </label>
+            <input
+              id="desired-features"
+              type="text"
+              placeholder="Examples: beach + nightlife, cozy cafes, hiking trails, less crowds..."
+              value={desiredFeatures}
+              onChange={(e) => setDesiredFeatures(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
           <button
             className="btn-primary submit-btn"
             onClick={handleImageSubmit}
@@ -197,6 +200,21 @@ export default function InputMode({ onSubmit, isLoading }) {
             </div>
 
             {error && <div className="error-message">{error}</div>}
+
+            <div className="trip-features-section" style={{ marginTop: '24px', marginBottom: '24px' }}>
+              <label htmlFor="desired-features">
+                What would you like on this trip?
+                <span className="optional-badge">OPTIONAL</span>
+              </label>
+              <input
+                id="desired-features"
+                type="text"
+                placeholder="Examples: beach + nightlife, cozy cafes, hiking trails, less crowds..."
+                value={desiredFeatures}
+                onChange={(e) => setDesiredFeatures(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
 
             <button
               className="btn-primary submit-btn"

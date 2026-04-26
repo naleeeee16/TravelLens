@@ -5,7 +5,7 @@
 }
 
 .header {
-  background: rgba(16, 24, 38, 0.8);
+  background: rgba(255, 255, 255, 0.7);
   border-bottom: 1px solid var(--border-subtle);
   padding: 1rem 0;
   position: sticky;
@@ -30,7 +30,7 @@
 }
 
 .logo-icon {
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.25));
   animation: floatIcon 3.4s ease-in-out infinite;
 }
@@ -49,7 +49,7 @@
 
 .logo h1 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   font-weight: 700;
   line-height: 1.2;
   padding-right: 0.08em;
@@ -79,14 +79,14 @@
 
 .nav-btn:hover {
   color: var(--text-primary);
-  background: var(--bg-hover);
+  background: var(--bg-elevated);
   border-color: var(--border-subtle);
 }
 
 .nav-btn.active {
-  background: rgba(139, 92, 246, 0.2);
+  background: rgba(178, 58, 58, 0.2);
   color: var(--text-primary);
-  border-color: rgba(139, 92, 246, 0.55);
+  border-color: rgba(178, 58, 58, 0.55);
 }
 
 .main-content {
@@ -98,7 +98,7 @@
 }
 
 .footer {
-  background: rgba(16, 24, 38, 0.65);
+  background: rgba(255, 255, 255, 0.65);
   color: var(--text-muted);
   text-align: center;
   padding: 1.1rem;
@@ -137,10 +137,10 @@ button:active {
 }
 
 .btn-secondary {
-  background: var(--bg-hover);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-default);
 }
 
 .btn-secondary:hover {
@@ -182,8 +182,8 @@ select {
   font-family: inherit;
   border-radius: 10px;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
   width: 100%;
@@ -193,9 +193,9 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: rgba(139, 92, 246, 0.72);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-  background: #152033;
+  border-color: rgba(178, 58, 58, 0.72);
+  box-shadow: 0 0 0 3px rgba(178, 58, 58, 0.2);
+  background: var(--bg-card);
 }
 
 textarea {

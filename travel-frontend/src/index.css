@@ -1,41 +1,38 @@
 /* TravelLens - Root Styles - Modern Dark Theme */
 
 :root {
-  /* Modern Dark Theme Palette */
-  --bg-primary: #0d0d0d;
-  --bg-secondary: #161616;
-  --bg-card: #1a1a1a;
-  --bg-elevated: #222222;
+  /* Pastel Light Theme Palette */
+  --bg-primary: #faf6f0;
+  --bg-secondary: #fdfaf6;
+  --bg-card: #ffffff;
+  --bg-elevated: #f5ebe6;
 
-  /* Accent Colors - Modern Vibrant */
-  --accent-primary: #8b5cf6;
-  /* Violet */
-  --accent-secondary: #6366f1;
-  /* Indigo */
-  --accent-tertiary: #06b6d4;
-  /* Cyan */
-  --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #06b6d4 100%);
+  /* Accent Colors - Brick Red Palette */
+  --accent-primary: #b23a3a;
+  --accent-secondary: #d46a6a;
+  --accent-tertiary: #b0c4b1;
+  --accent-gradient: linear-gradient(135deg, #b23a3a 0%, #d46a6a 50%, #b0c4b1 100%);
 
   /* Semantic Colors */
-  --success: #10b981;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --info: #3b82f6;
+  --success: #81b29a;
+  --danger: #e07a5f;
+  --warning: #f2cc8f;
+  --info: #8ecae6;
 
-  /* Text Colors - High Contrast */
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  /* Text Colors - Soft Dark */
+  --text-primary: #4a403a;
+  --text-secondary: #7a6a62;
+  --text-muted: #a3958c;
 
   /* Borders */
-  --border-subtle: #27272a;
-  --border-default: #3f3f46;
+  --border-subtle: #ebdcd5;
+  --border-default: #d6c5bc;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.32);
+  --shadow-sm: 0 1px 2px rgba(100, 80, 70, 0.05);
+  --shadow-md: 0 4px 12px rgba(100, 80, 70, 0.08);
+  --shadow-lg: 0 8px 24px rgba(100, 80, 70, 0.12);
+  --shadow-glow: 0 0 20px rgba(178, 58, 58, 0.4);
 
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -49,7 +46,7 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--text-secondary);
   background: var(--bg-primary);
   font-synthesis: none;

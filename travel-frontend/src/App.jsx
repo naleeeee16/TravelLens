@@ -71,7 +71,7 @@ function App() {
         <div className="header-content">
           <div className="logo">
             <span className="logo-icon"></span>
-            <h1>TravelLens</h1>
+            <h1>TraveLens</h1>
           </div>
           <nav className="nav-buttons">
             <button 
@@ -136,7 +136,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>TravelLens © 2026 | Discover your next adventure powered by SkyScanner</p>
+        <p><span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>TraveLens</span> © 2026 | Discover your next adventure powered by SkyScanner</p>
       </footer>
     </div>
   )
